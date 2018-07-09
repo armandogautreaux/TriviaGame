@@ -1,14 +1,17 @@
-//1.- I started creating the variable triviaContent to store the DOM Element (to append my functions).
+//1.- DOM Elements
 var triviaContent = $('#trivia-content');
+var timerContent = $('#stopwatch');
 
-// 2. I continued creating global variables to hold future contents
+// 2. Global Variables
 var correct = 0;
 var answer = 0;
 var incorrect = 0;
 var notAnswered = 0;
 var questionIndex = 0;
+var time = 31;
+var timerInterval = '';
 
-// 3. Next, I created the variable questions that holds an object with all questions and their respective elements.
+// 3. Questions Objects (Question, Answers, AnswersSandBox)
 var questions = [
   {
     q:
@@ -24,13 +27,13 @@ var questions = [
   {
     q: 'A farmer has 15 cows, all but 8 die. How many does he have left?',
     answer: '8',
-    answersSandBox: [10, 2, 8, 'All the cows died by sadness']
+    answersSandBox: [10, 2, 8, 'All cows died by sadness']
   },
   {
     q:
       'The ages of a mother and her graduate son add up to 66. The mother’s age is the son’s age reversed. How old are they?',
     answer: '42 and 24',
-    answersSandBox: ['99 and 36', '42 and 24', '33 and 66', 'none of the above']
+    answersSandBox: ['99 and 36', '42 and 24', '33 and 66', 'None of the above']
   },
   {
     q:
@@ -45,49 +48,55 @@ var questions = [
   }
 ];
 
-// 4. This is the first function (attached to a on.click event) that will trigger all the other functions
+// 4. This function (attached to an on.click event) will trigger all the other functions.
 var startTrigger = function() {
   triviaContent.empty();
   var startButton = $('<button>');
   startButton.text('Start');
-  startButton.addClass('btn btn-primary btn-block btn-start');
+  startButton.addClass('btn  btn-font p-4 btn-block btn-start');
   triviaContent.append(startButton);
 };
 
-// 5. This function will create each question and its answers
+// 5. This function will create each question and its answer.
 var renderQuestion = function() {
   triviaContent.empty();
-  // If there are still more questions, render the next one.
+  time = 31;
+  run();
+
+  // 5.1 If there are still more questions, render the next one.
   if (questionIndex <= questions.length - 1) {
-    // I started creading a h4 element and storing it in a variable
-    var question = $('<h4>');
-    // The next step is to create text inside of my h4 - this text will be my first question
+    // Var question will add its properties.
+    var question = $('<h3>');
+    question.addClass('mb-5');
     question.text(questions[questionIndex].q);
-    // I append this h4 to the trivia-content element that already exists in my html
-    $('#trivia-content').append(question);
-    // Trought the next for loop I created the buttons to hold the answers and follow the same steps to append the elements inside of the same html element.
+    triviaContent.append(question);
+
+    // 5.2 The next for loop will create buttons to hold the answers.
     for (var i = 0; i < 4; i++) {
       var button = $('<button>');
       button.text(questions[questionIndex].answersSandBox[i]);
-      button.addClass('option btn btn-block btn-outline-primary');
+      button.addClass(
+        'option btn btn-dark btn-font-inside btn-block warning p-3'
+      );
       button.attr('data-value', questions[questionIndex].answersSandBox[i]);
-      $('#trivia-content').append(button);
+      triviaContent.append(button);
     }
   }
-  // If there aren't, render the end game screen.
+
+  // 5.3 If there aren't more questions, render the end game screen.
   else {
     gameOver();
   }
 };
 
-//This function grabs our last created .class and apply an on.click event.
+// 6. This function grabs our last created .option class through a DOM Event (see 10.1) to select the answer.
 var selectAnswer = function() {
+  stop();
   if (questionIndex === questions.length) {
     return;
   }
   var answer = questions[questionIndex].answer;
   var optionValue = $(this).attr('data-value');
-  console.log(optionValue);
   //Setting Conditional for winning
   if (optionValue === answer) {
     alert('Correct!');
@@ -100,20 +109,20 @@ var selectAnswer = function() {
   renderQuestion();
 };
 
-//This function will be called in case that all of our answers or time will no longer be postives
+// 7. This gameOver function will be called in case that all of our answers are incorrect or time === 0
 var gameOver = function() {
+  stop();
   var message = $('<h1>');
-  message.text('Game Over');
+  message.addClass('game-over mb-3');
   var scoreCorrects = $('<h3>');
   var scoreIncorrects = $('<h3>');
   var br = $('<br>');
   var btnRestart = $('<button>');
+  message.text('Game Over');
   btnRestart.text('Restart');
-  btnRestart.addClass('btn btn-primary btn-block btn-restart');
+  btnRestart.addClass('btn btn-font btn-block btn-restart mt-3');
   scoreCorrects.text('Correct: ' + correct);
-
   scoreIncorrects.text('Incorrect: ' + incorrect);
-
   triviaContent.append(
     br,
     message,
@@ -126,7 +135,7 @@ var gameOver = function() {
   );
 };
 
-//This function will be call everytime the user wants to restart the game - it's attached to a click event.
+// 8. This function will be call it everytime the user wants to restart the game.
 function resetClick() {
   questionIndex = 0;
   incorrect = 0;
@@ -134,9 +143,43 @@ function resetClick() {
   renderQuestion();
 }
 
-//This DOM events are related with all the opctions to select inside of the game.
+// 9. STOPWATCH
+
+// 9.1 This function makes the timer go backwards.
+function run() {
+  timerInterval = setInterval(decrement, 1000);
+}
+
+// 9.2 This function display the timer and set contidionals in case that time === 0
+function decrement() {
+  time--;
+  timerContent.html('Time Remaining: ' + time + ' Seconds');
+  if (time === 0) {
+    stop();
+    if (questionIndex === questions.length) {
+      return;
+    }
+    alert('Out of time');
+    incorrect++;
+    questionIndex++;
+    renderQuestion();
+  }
+}
+
+// 9.3 This function stop the timer
+function stop() {
+  clearInterval(timerInterval);
+}
+
+// 10 DOM Events
+
+// 10.1 This event render the question and answers when .btn-start is clicked.
 $(document).on('click', '.btn-start', renderQuestion);
+
+// 10.1 This event set the conditional of selectAnswer function when .option is clicked.
 $(document).on('click', '.option', selectAnswer);
+
+// 10.1 This event resets the game when .btn-restart is clicked.
 $(document).on('click', '.btn-restart', resetClick);
 
 // This is the calling of our main function.

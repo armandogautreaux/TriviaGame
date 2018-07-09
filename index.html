@@ -19,39 +19,40 @@
 
 <body>
 
-  <!-- MAIN HEADER/GAME-->
-  <header>
-    <div class="container">
-      <h1 class="text-center">
-        QUESTION GAME
-      </h1>
-      <h5 class="text-right" id="stopwatch">
-      </h5>
-    </div>
-  </header>
-
-
-  <!-- MAIN SECTION-->
-  <section class="main">
-    <div class="container text-center">
+  <!-- GAME SECTION-->
+  <section>
+    <div class="container bgy p-5">
       <div class="row">
+
         <div class="col-sm-12">
-          <div id="trivia-content">
-          </div>
+          <!--Timer starts here-->
+          <h5 class="text-right" id="stopwatch"></h5>
+          <!--Timer ends here-->
+          <!--Game title starts here-->
+          <h1 class="text-center logo p-4">
+            TRIVIA GAME
+          </h1>
+          <!--Game title ends here-->
         </div>
+
+        <div class="col-sm-12">
+          <!--Game questions and answers area starts here-->
+          <div id="trivia-content" class="bgy text-center"></div>
+          <!--Ends Game questions and answers area-->
+        </div>
+
       </div>
     </div>
   </section>
 
 
-  <!-- MAIN FOOTER/GAME -->
-  <footer class="primary-footer">
-    <section class="fixed-bottom text-center">
-      <p class="pt-1">
-        <small>Copyright &copy;
-        </small>
-      </p>
-    </section>
+  <!-- FOOTER/COPYRIGHT -->
+  <footer class="fixed-bottom text-center text-warning">
+    <p class="pt-1">
+      <small>
+        Copyright &copy;
+      </small>
+    </p>
   </footer>
 
 

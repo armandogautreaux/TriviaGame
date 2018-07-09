@@ -1,0 +1,71 @@
+/*
+	Author: Armando Gautreaux
+	Template: Trivia Game
+	Version: 0.1
+	GITHUB: https://github.com/armandogautreaux
+*/
+
+/* TABLE OF CONTENTS
+  1.  General Styles
+  2.  Game Content
+*/
+
+/*
+========================================
+1. General Styles
+========================================
+*/
+
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,700');
+@import url('https://fonts.googleapis.com/css?family=Arvo:400,700');
+
+body {
+  margin-top: 70px;
+  margin-bottom: 80px;
+  background: url(../images/trian.png);
+  color: #12435e;
+}
+
+h3 {
+  font-family: 'Arvo', serif;
+}
+/*
+========================================
+2. Game Content
+========================================
+*/
+
+.bgy {
+  background: #ffda64;
+}
+
+.logo {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 8rem;
+  font-weight: 700;
+  color: #e64646;
+}
+
+.btn-font {
+  font-family: 'Arvo', serif;
+  font-size: 5rem;
+  background: #14455f;
+  color: #44dae7;
+}
+
+.btn-font:hover {
+  background: #e64646;
+}
+
+.btn-font-inside {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 2rem;
+  color: #ffda64;
+}
+
+.game-over {
+  font-family: 'Ubuntu', sans-serif;
+  font-size: 10rem;
+  font-weight: 700;
+  color: #44dae7;
+}
